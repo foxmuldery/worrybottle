@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烦恼瓶子</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* 添加额外的CSS以确保打开瓶子选项居中 */
+        .status-info {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .early-open-option {
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .version-info {
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>烦恼瓶子</h1>
+        </header>
+        
+        <main id="app-content">
+            <!-- 主页 -->
+            <div id="home-screen" class="screen active">
+                <div class="welcome-message">
+                    <h2>欢迎使用烦恼瓶子</h2>
+                    <p>记录你的烦恼，给它一段时间，看看它是否会自行消散</p>
+                </div>
+                <div class="philosophy-quote">
+                    <p>"给烦恼一个期限，它往往会在到期前消失"</p>
+                </div>
+                <div class="action-buttons">
+                    <button id="create-worry-btn" class="primary-btn">
+                        <span class="material-icons">add</span> 记录新烦恼
+                    </button>
+                    <button id="view-bottles-btn" class="secondary-btn">
+                        <span class="material-icons">inbox</span> 查看我的瓶子
+                    </button>
+                     <button id="view-growth-btn" class="primary-btn growth-btn">
+                        <span class="material-icons">celebration</span> 感悟我的成长
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 创建烦恼 -->
+            <div id="create-worry-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" id="create-back-btn">
+                        <span class="material-icons">arrow_back</span>
+                    </button>
+                    <h2>记录烦恼</h2>
+                </div>
+                
+                <div class="philosophy-quote">
+                    <p>"将烦恼写下来，是看清它真实样貌的第一步"</p>
+                </div>
+                
+                <div class="create-worry-form">
+                    <div class="form-group">
+                        <label for="worry-title">给这个烦恼起个名字（选填）</label>
+                        <input type="text" id="worry-title" placeholder="例如：工作压力、人际关系...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="worry-content">描述你的烦恼</label>
+                        <textarea id="worry-content" placeholder="写下你现在的烦恼..." rows="5"></textarea>
+                        <div class="char-counter"><span id="char-count">0</span>/500</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>这个烦恼让你感到</label>
+                        <div class="emotion-selector">
+                            <div class="emotion" data-emotion="anxious">
+                                <span class="emotion-icon">😰</span>
+                                <span class="emotion-label">焦虑</span>
+                            </div>
+                            <div class="emotion" data-emotion="sad">
+                                <span class="emotion-icon">😢</span>
+                                <span class="emotion-label">悲伤</span>
+                            </div>
+                            <div class="emotion" data-emotion="angry">
+                                <span class="emotion-icon">😠</span>
+                                <span class="emotion-label">愤怒</span>
+                            </div>
+                            <div class="emotion" data-emotion="stressed">
+                                <span class="emotion-icon">😫</span>
+                                <span class="emotion-label">压力</span>
+                            </div>
+                            <div class="emotion" data-emotion="confused">
+                                <span class="emotion-icon">😕</span>
+                                <span class="emotion-label">困惑</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>烦恼强度</label>
+                        <div class="intensity-slider">
+                            <input type="range" id="worry-intensity" min="1" max="5" value="3">
+                            <div class="intensity-labels">
+                                <span>轻微</span>
+                                <span>中等</span>
+                                <span>强烈</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="continue-to-seal-btn" class="primary-btn full-width">
+                        继续 <span class="material-icons">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 封存界面 -->
+            <div id="seal-worry-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" id="seal-back-btn">
+                        <span class="material-icons">arrow_back</span>
+                    </button>
+                    <h2>封存烦恼</h2>
+                </div>
+                
+                <div class="philosophy-quote">
+                    <p>"时间是解决问题的良药，耐心是承载良药的容器"</p>
+                </div>
+                
+                <div class="seal-worry-content">
+                    <div class="form-group">
+                        <label>选择一个瓶子</label>
+                        <div class="bottle-selector">
+                            <div class="bottle" data-bottle="classic">
+                                <div class="bottle-image classic-bottle"></div>
+                                <span>经典瓶</span>
+                            </div>
+                            <div class="bottle" data-bottle="vintage">
+                                <div class="bottle-image vintage-bottle"></div>
+                                <span>复古瓶</span>
+                            </div>
+                            <div class="bottle" data-bottle="round">
+                                <div class="bottle-image round-bottle"></div>
+                                <span>圆形瓶</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>封存多久？</label>
+                        <div class="time-selector">
+                            <div class="time-option" data-days="3">
+                                <span class="time-value">3天</span>
+                            </div>
+                            <div class="time-option" data-days="7">
+                                <span class="time-value">1周</span>
+                            </div>
+                            <div class="time-option" data-days="14">
+                                <span class="time-value">2周</span>
+                            </div>
+                            <div class="time-option" data-days="30">
+                                <span class="time-value">1个月</span>
+                            </div>
+                            <div class="time-option custom" data-days="custom">
+                                <span class="time-value">自定义</span>
+                            </div>
+                        </div>
+                        <div id="custom-time-input" class="hidden">
+                            <input type="number" id="custom-days" min="1" max="90" value="1">
+                            <span>天</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bottle-preview">
+                        <div id="selected-bottle" class="bottle-image classic-bottle"></div>
+                    </div>
+                    
+                    <button id="seal-worry-btn" class="primary-btn full-width">
+                        封存烦恼 <span class="material-icons">lock</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 瓶子列表 -->
+            <div id="bottle-list-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" id="list-back-btn">
+                        <span class="material-icons">arrow_back</span>
+                    </button>
+                    <h2>我的烦恼瓶子</h2>
+                </div>
+                
+                <div class="philosophy-quote">
+                    <p>"每一个被解决的烦恼，都是通往内心平静的阶梯"</p>
+                </div>
+                
+                <div class="bottles-tabs">
+                    <button class="tab-btn active" data-tab="sealed">
+                        等待中 <span id="sealed-count" class="count-badge">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="openable">
+                        可打开 <span id="openable-count" class="count-badge">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="resolved">
+                        已解决 <span id="resolved-count" class="count-badge">0</span>
+                    </button>
+                </div>
+                
+                <div class="bottles-container">
+                    <div id="sealed-bottles" class="bottle-tab active">
+                        <div class="empty-state">
+                            <span class="material-icons">hourglass_empty</span>
+                            <p>没有正在等待的烦恼瓶子</p>
+                        </div>
+                        <!-- 瓶子将动态添加到这里 -->
+                    </div>
+                    
+                    <div id="openable-bottles" class="bottle-tab">
+                        <div class="empty-state">
+                            <span class="material-icons">lock_open</span>
+                            <p>没有可以打开的烦恼瓶子</p>
+                        </div>
+                        <!-- 瓶子将动态添加到这里 -->
+                    </div>
+                    
+                    <div id="resolved-bottles" class="bottle-tab">
+                        <div class="empty-state">
+                            <span class="material-icons">check_circle</span>
+                            <p>没有已解决的烦恼瓶子</p>
+                        </div>
+                        <!-- 瓶子将动态添加到这里 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 瓶子详情 -->
+            <div id="bottle-detail-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" id="detail-back-btn">
+                        <span class="material-icons">arrow_back</span>
+                    </button>
+                    <h2>烦恼瓶子详情</h2>
+                </div>
+                
+                <div class="bottle-detail-container">
+                    <div class="bottle-header">
+                        <h3 id="detail-title">烦恼标题</h3>
+                        <div class="bottle-meta">
+                            <span id="detail-date">2025年6月23日</span>
+                            <span class="emotion-tag" id="detail-emotion">焦虑</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bottle-status-section">
+                        <div id="sealed-status" class="bottle-status">
+                            <div id="detail-bottle" class="bottle-image classic-bottle"></div>
+                            <div class="status-info">
+                                <p>你的烦恼还在瓶中等待...</p>
+                                <div class="time-remaining">
+                                    <span class="material-icons">hourglass_bottom</span>
+                                    <span id="time-left">还剩 6 天</span>
+                                </div>
+                                <p class="status-philosophy">"给自己一段不去想它的时间，看看世界会如何回应"</p>
+                                <div class="early-open-option">
+                                    <button id="early-open-btn" class="secondary-btn small-btn">
+                                        <span class="material-icons">lock_open</span> 提前打开
+                                    </button>
+                                    <p class="early-open-hint">如果你已经准备好了，可以提前打开这个瓶子</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="openable-status" class="bottle-status hidden">
+                            <div id="openable-bottle" class="bottle-image classic-bottle glow"></div>
+                            <div class="status-info">
+                                <p>你的瓶子可以打开了！</p>
+                                <p class="status-philosophy">"现在，是时候直面过去的自己，看看内心的变化"</p>
+                                <button id="open-bottle-btn" class="primary-btn">
+                                    打开瓶子
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="opened-status" class="bottle-status hidden">
+                            <div class="bottle-content">
+                                <h4>你曾经写下：</h4>
+                                <p id="detail-content">烦恼内容将显示在这里...</p>
+                                <p class="status-philosophy">"重新审视过去的烦恼，你会发现自己已经成长"</p>
+                                
+                                <div class="worry-question">
+                                    <h4>这个烦恼现在还困扰着你吗？</h4>
+                                    <div class="worry-actions">
+                                        <button id="worry-gone-btn" class="action-btn gone-btn">
+                                            <span class="material-icons">check_circle</span>
+                                            不再困扰我
+                                        </button>
+                                        <button id="worry-remains-btn" class="action-btn remains-btn">
+                                            <span class="material-icons">arrow_circle_down</span>
+                                            依然困扰我
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="reflection-status" class="bottle-status hidden">
+                            <div class="reflection-content">
+                                <h4>你的成长感悟</h4>
+                                <p class="reflection-philosophy">"记录感悟，是将经验转化为智慧的过程"</p>
+                                <textarea id="reflection-text" placeholder="记录下你从这次经历中学到了什么..." rows="4"></textarea>
+                                <button id="save-reflection-btn" class="primary-btn">
+                                    保存感悟
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="resolved-status" class="bottle-status hidden">
+                            <div class="resolved-content">
+                                <div class="resolved-icon">
+                                    <span class="material-icons">celebration</span>
+                                </div>
+                                <h4>烦恼已解决！</h4>
+                                <p class="status-philosophy">"每一次战胜烦恼，都是自我成长的证明"</p>
+                                <div class="reflection-display">
+                                    <h5>你的感悟：</h5>
+                                    <p id="saved-reflection">感悟内容将显示在这里...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="reseal-status" class="bottle-status hidden">
+                            <div class="reseal-content">
+                                <h4>重新封存这个烦恼</h4>
+                                <p class="status-philosophy">"有些烦恼需要更多时间，这是自我理解的过程，而非失败"</p>
+                                <p>给自己多一点时间，选择一个新的封存期限：</p>
+                                <div class="reseal-time-selector">
+                                    <div class="time-option" data-days="3">
+                                        <span class="time-value">3天</span>
+                                    </div>
+                                    <div class="time-option" data-days="7">
+                                        <span class="time-value">1周</span>
+                                    </div>
+                                    <div class="time-option" data-days="14">
+                                        <span class="time-value">2周</span>
+                                    </div>
+                                    <div class="time-option" data-days="30">
+                                        <span class="time-value">1个月</span>
+                                    </div>
+                                </div>
+                                <button id="reseal-confirm-btn" class="primary-btn">
+                                    重新封存
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>烦恼瓶子 &copy; 2025</p>
+            <p class="version-info">版本 1.0.0</p>
+        </footer>
+    </div>
+    
+    <script src="js/animations.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

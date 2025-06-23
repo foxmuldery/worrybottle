@@ -1,0 +1,1109 @@
+/* 基础重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f7f4;
+    min-height: 100vh;
+}
+
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+header h1 {
+    color: #5f84a2;
+    font-size: 2.2rem;
+    font-weight: 300;
+}
+
+main {
+    flex: 1;
+    position: relative;
+}
+
+.screen {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.screen.active {
+    display: block;
+    opacity: 1;
+}
+
+/* 首页样式 */
+.welcome-message {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.welcome-message h2 {
+    color: #5f84a2;
+    margin-bottom: 10px;
+}
+
+.welcome-message p {
+    color: #777;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 300px;
+    margin: 40px auto;
+}
+
+.primary-btn, .secondary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primary-btn {
+    background-color: #5f84a2;
+    color: white;
+    box-shadow: 0 3px 10px rgba(95, 132, 162, 0.3);
+}
+
+.primary-btn:hover {
+    background-color: #4d6d8a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(95, 132, 162, 0.4);
+}
+
+.secondary-btn {
+    background-color: #e8f1f8;
+    color: #5f84a2;
+    box-shadow: 0 3px 10px rgba(95, 132, 162, 0.1);
+}
+
+.secondary-btn:hover {
+    background-color: #d1e3f2;
+    transform: translateY(-2px);
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* 屏幕通用样式 */
+.screen-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #5f84a2;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.screen-header h2 {
+    color: #5f84a2;
+    font-weight: 400;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: #5f84a2;
+    outline: none;
+}
+
+.char-counter {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* 情绪选择器 */
+.emotion-selector {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.emotion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(20% - 8px);
+    padding: 10px 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.emotion:hover {
+    background-color: #e8f1f8;
+}
+
+.emotion.selected {
+    background-color: #d1e3f2;
+    box-shadow: 0 2px 8px rgba(95, 132, 162, 0.2);
+}
+
+.emotion-icon {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.emotion-label {
+    font-size: 0.8rem;
+}
+
+/* 强度滑块 */
+.intensity-slider {
+    width: 100%;
+    padding: 10px 0;
+}
+
+.intensity-slider input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.intensity-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #777;
+    font-size: 0.8rem;
+}
+
+/* 瓶子选择器 */
+.bottle-selector {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.bottle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.bottle:hover {
+    background-color: #e8f1f8;
+}
+
+.bottle.selected {
+    background-color: #d1e3f2;
+    box-shadow: 0 2px 8px rgba(95, 132, 162, 0.2);
+}
+
+.bottle-image {
+    width: 60px;
+    height: 120px;
+    margin-bottom: 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.classic-bottle {
+    background-image: url('../images/classic-bottle.svg');
+}
+
+.vintage-bottle {
+    background-image: url('../images/vintage-bottle.svg');
+}
+
+.round-bottle {
+    background-image: url('../images/round-bottle.svg');
+}
+
+/* 时间选择器 */
+.time-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.time-option {
+    flex: 1;
+    min-width: calc(33.333% - 10px);
+    text-align: center;
+    padding: 12px 8px;
+    background-color: #e8f1f8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.time-option:hover {
+    background-color: #d1e3f2;
+}
+
+.time-option.selected {
+    background-color: #5f84a2;
+    color: white;
+    box-shadow: 0 2px 8px rgba(95, 132, 162, 0.2);
+}
+
+#custom-time-input {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#custom-time-input input {
+    width: 60px;
+    padding: 8px;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 瓶子预览 */
+.bottle-preview {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.bottle-preview .bottle-image {
+    width: 100px;
+    height: 200px;
+}
+
+/* 按钮样式 */
+.full-width {
+    width: 100%;
+}
+
+/* 瓶子列表样式 */
+.bottles-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 0;
+    color: #777;
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab-btn.active {
+    color: #5f84a2;
+    font-weight: 500;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background-color: #5f84a2;
+    border-radius: 3px 3px 0 0;
+}
+
+.count-badge {
+    display: inline-block;
+    background-color: #e8f1f8;
+    color: #5f84a2;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.tab-btn.active .count-badge {
+    background-color: #5f84a2;
+    color: white;
+}
+
+.bottle-tab {
+    display: none;
+}
+
+.bottle-tab.active {
+    display: block;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    color: #aaa;
+}
+
+.empty-state .material-icons {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.6;
+}
+
+/* 瓶子卡片样式 */
+.bottle-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bottle-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bottle-card .bottle-image {
+    width: 40px;
+    height: 80px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.bottle-card-content {
+    flex: 1;
+}
+
+.bottle-card h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.bottle-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.emotion-tag {
+    background-color: #e8f1f8;
+    color: #5f84a2;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+}
+
+.bottle-card .countdown {
+    font-size: 0.8rem;
+    color: #5f84a2;
+    margin-top: 5px;
+}
+
+.glow {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        filter: drop-shadow(0 0 5px rgba(95, 132, 162, 0.6));
+    }
+    to {
+        filter: drop-shadow(0 0 15px rgba(95, 132, 162, 0.8));
+    }
+}
+
+/* 瓶子详情样式 */
+.bottle-detail-container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+}
+
+.bottle-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.bottle-header h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.bottle-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.bottle-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.bottle-status .bottle-image {
+    width: 80px;
+    height: 160px;
+    margin-bottom: 20px;
+}
+
+.status-info {
+    margin-top: 15px;
+}
+
+.time-remaining {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5f84a2;
+    margin-top: 10px;
+}
+
+.time-remaining .material-icons {
+    margin-right: 5px;
+}
+
+.bottle-content {
+    width: 100%;
+    text-align: left;
+}
+
+.bottle-content h4 {
+    font-size: 1rem;
+    color: #5f84a2;
+    margin-bottom: 10px;
+}
+
+.bottle-content p {
+    background-color: #f9f7f4;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.worry-question h4 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.worry-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.action-btn .material-icons {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.gone-btn {
+    color: #5ca270;
+}
+
+.gone-btn:hover {
+    background-color: #eaf5ef;
+}
+
+.remains-btn {
+    color: #a27c5c;
+}
+
+.remains-btn:hover {
+    background-color: #f5f0ea;
+}
+
+.reflection-content, .resolved-content, .reseal-content {
+    width: 100%;
+    text-align: left;
+}
+
+.reflection-content h4, .resolved-content h4, .reseal-content h4 {
+    font-size: 1rem;
+    color: #5f84a2;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.resolved-icon {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.resolved-icon .material-icons {
+    font-size: 3rem;
+    color: #5ca270;
+}
+
+.reflection-display {
+    background-color: #f9f7f4;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.reflection-display h5 {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.reseal-content p {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #777;
+}
+
+.reseal-time-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* 动画样式 */
+.animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.animation-container.show {
+    opacity: 1;
+}
+
+.animation-container.fade-out {
+    opacity: 0;
+}
+
+.animation-bottle {
+    width: 100px;
+    height: 200px;
+    position: relative;
+    z-index: 10;
+}
+
+.worry-content-animation {
+    background-color: white;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 8px;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    max-width: 200px;
+    text-align: center;
+}
+
+.worry-content-animation.move-to-bottle {
+    top: 50%;
+    left: 50%;
+}
+
+.worry-content-animation.inside-bottle {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+.seal-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: transparent;
+    z-index: 15;
+    opacity: 0;
+    transition: all 1s ease;
+}
+
+.seal-effect.seal {
+    opacity: 1;
+    background-color: rgba(95, 132, 162, 0.3);
+    box-shadow: 0 0 30px rgba(95, 132, 162, 0.8);
+}
+
+.animation-bottle.sink {
+    transform: translateY(100vh);
+    transition: transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.animation-container.opening .animation-bottle {
+    transform: translateY(100vh);
+}
+
+.animation-bottle.rise {
+    transform: translateY(0);
+    transition: transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.animation-bottle.open {
+    animation: openBottle 1s forwards;
+}
+
+@keyframes openBottle {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+    20% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    40% {
+        transform: translateY(0) rotate(5deg);
+    }
+    60% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    80% {
+        transform: translateY(0) rotate(5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0);
+        filter: brightness(1.5);
+    }
+}
+
+/* 烟花动画 */
+.animation-container.resolved {
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: explode 1.5s forwards;
+    opacity: 0;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.resolve-message {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+    opacity: 0;
+    animation: fadeMessage 4s forwards;
+}
+
+@keyframes fadeMessage {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+    .app-container {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .emotion {
+        width: calc(33.333% - 10px);
+        margin-bottom: 10px;
+    }
+    
+    .bottle-selector {
+        flex-wrap: wrap;
+    }
+    
+    .bottle {
+        width: calc(50% - 10px);
+    }
+}
+
+/* 提前打开选项样式 */
+.early-open-option {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.early-open-hint {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 8px;
+}
+
+.small-btn {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+}
+
+/* 整体美化 */
+body {
+    background-color: #f8f9fa;
+    color: #444;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7;
+}
+
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: #fff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+}
+
+/* 哲理句子样式 */
+.philosophy-quote {
+    margin: 15px auto 30px;
+    text-align: center;
+    font-style: italic;
+    color: #6c757d;
+    max-width: 85%;
+    line-height: 1.6;
+    font-weight: 300;
+    font-size: 1.05rem;
+    padding: 15px;
+    border-left: 3px solid #5f84a2;
+    background-color: #f8f9fa;
+    border-radius: 0 8px 8px 0;
+}
+
+.status-philosophy {
+    margin: 15px 0;
+    font-style: italic;
+    color: #6c757d;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.reflection-philosophy {
+    margin: 0 0 20px;
+    font-style: italic;
+    color: #6c757d;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* 改进按钮样式 */
+.primary-btn, .secondary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #6e8cb2 0%, #5f84a2 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(95, 132, 162, 0.25);
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #5f84a2 0%, #4d6d8a 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(95, 132, 162, 0.3);
+}
+
+.secondary-btn {
+    background-color: #f0f7ff;
+    color: #5f84a2;
+    box-shadow: 0 3px 10px rgba(95, 132, 162, 0.1);
+}
+
+.secondary-btn:hover {
+    background-color: #e0edfa;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(95, 132, 162, 0.15);
+}
+
+/* 优化表单元素 */
+input[type="text"], textarea, input[type="number"] {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: #fff;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    color: #444;
+}
+
+input[type="text"]:focus, textarea:focus, input[type="number"]:focus {
+    border-color: #5f84a2;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(95, 132, 162, 0.1);
+}
+
+/* 优化瓶子卡片 */
+.bottle-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    padding: 18px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.bottle-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 优化瓶子详情容器 */
+.bottle-detail-container {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+/* 优化选择器样式 */
+.emotion, .bottle, .time-option {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.emotion.selected, .bottle.selected {
+    background-color: #e0edfa;
+    box-shadow: 0 3px 10px rgba(95, 132, 162, 0.15);
+    transform: translateY(-2px);
+}
+
+.time-option.selected {
+    background: linear-gradient(135deg, #6e8cb2 0%, #5f84a2 100%);
+    color: white;
+    box-shadow: 0 3px 10px rgba(95, 132, 162, 0.2);
+    transform: translateY(-2px);
+}
+
+/* 优化动画效果 */
+.glow {
+    animation: enhanced-glow 2.5s infinite alternate;
+}
+
+@keyframes enhanced-glow {
+    from {
+        filter: drop-shadow(0 0 5px rgba(95, 132, 162, 0.6));
+    }
+    to {
+        filter: drop-shadow(0 0 20px rgba(95, 132, 162, 0.9));
+    }
+}
+
+/* 改进标题样式 */
+header h1 {
+    color: #5f84a2;
+    font-size: 2.4rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.screen-header h2 {
+    color: #5f84a2;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* 优化标签页 */
+.bottles-tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 25px;
+    background-color: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+    padding: 5px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 14px 0;
+    color: #888;
+    font-size: 0.95rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px 8px 0 0;
+}
+
+.tab-btn.active {
+    color: #5f84a2;
+    font-weight: 500;
+    background-color: #fff;
+}
+
+.tab-btn:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 增强动画容器样式 */
+.animation-container {
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+}
+
+/* 增强瓶子图像效果 */
+.bottle-image {
+    transition: all 0.4s ease;
+}
+
+.bottle:hover .bottle-image {
+    transform: translateY(-5px);
+}
+
+/* 使用内联SVG替代外部SVG文件 */
+.classic-bottle {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='120' viewBox='0 0 60 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='bottleGradient' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2389b8e5' stop-opacity='0.85'/%3E%3Cstop offset='100%25' stop-color='%235f84a2' stop-opacity='0.85'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M25 10 L25 25 L20 30 L20 100 L40 100 L40 30 L35 25 L35 10 Z' fill='url(%23bottleGradient)' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3Crect x='25' y='3' width='10' height='7' fill='%23d1e3f2' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3C/svg%3E");
+}
+
+.vintage-bottle {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='120' viewBox='0 0 60 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='vintageGradient' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23a5c8e4' stop-opacity='0.85'/%3E%3Cstop offset='100%25' stop-color='%237292b0' stop-opacity='0.85'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M20 25 L25 15 L25 10 L35 10 L35 15 L40 25 L40 40 L45 55 L45 90 L40 100 L20 100 L15 90 L15 55 L20 40 Z' fill='url(%23vintageGradient)' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3Cellipse cx='30' cy='10' rx='5' ry='2' fill='%23d1e3f2' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3Crect x='28' y='3' width='4' height='7' fill='%23d1e3f2' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3C/svg%3E");
+}
+
+.round-bottle {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='120' viewBox='0 0 60 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='roundGradient' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9dff0' stop-opacity='0.85'/%3E%3Cstop offset='100%25' stop-color='%236088a6' stop-opacity='0.85'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M25 25 L25 15 L25 10 L35 10 L35 15 L35 25 C42 30 47 40 47 60 C47 85 40 100 30 100 C20 100 13 85 13 60 C13 40 18 30 25 25 Z' fill='url(%23roundGradient)' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3Cellipse cx='30' cy='10' rx='5' ry='2' fill='%23d1e3f2' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3Crect x='27' y='3' width='6' height='7' fill='%23d1e3f2' stroke='%235f84a2' stroke-width='1.5' stroke-opacity='0.8'/%3E%3C/svg%3E");
+}

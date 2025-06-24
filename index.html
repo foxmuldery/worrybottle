@@ -3,18 +3,1305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>烦恼瓶子</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>烦恼瓶子 - 深海玻璃风</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 添加额外的CSS以确保打开瓶子选项居中 */
-        .status-info {
+        :root {
+            --deep-blue: #0c1c2c;
+            --medium-blue: #1d354d;
+            --light-blue: #3a6a8f;
+            --accent-blue: #5a9bd5;
+            --accent-glow: #7ab9ff;
+            --light-text: #f0f7ff;
+            --secondary-text: #c5daed;
+            --dark-text: #183146;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-highlight: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.3);
+            --card-glass: rgba(255, 255, 255, 0.05);
+            --success-color: #4caf50;
+            --success-dark: #2e7d32;
+            --warning-color: #ff9800;
+            --warning-dark: #e65100;
+            --error-color: #f44336;
+            --error-dark: #b71c1c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* 动画容器样式 */
+.animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.animation-container.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.animation-container.fade-out {
+    opacity: 0;
+}
+
+.animation-bottle {
+    width: 100px;
+    height: 200px;
+    position: relative;
+    z-index: 10;
+}
+
+.worry-content-animation {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: var(--light-text);
+    padding: 15px 20px;
+    border-radius: 12px;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    max-width: 220px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.worry-content-animation.move-to-bottle {
+    top: 50%;
+    left: 50%;
+}
+
+.worry-content-animation.inside-bottle {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+.seal-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: transparent;
+    z-index: 15;
+    opacity: 0;
+    transition: all 1s ease;
+}
+
+.seal-effect.seal {
+    opacity: 1;
+    background-color: rgba(90, 155, 213, 0.3);
+    box-shadow: 0 0 30px rgba(90, 155, 213, 0.8);
+}
+
+.animation-bottle.sink {
+    transform: translateY(100vh);
+    transition: transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.animation-container.opening .animation-bottle {
+    transform: translateY(100vh);
+}
+
+.animation-bottle.rise {
+    transform: translateY(0);
+    transition: transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.animation-bottle.open {
+    animation: openBottle 1s forwards;
+}
+
+@keyframes openBottle {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+    20% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    40% {
+        transform: translateY(0) rotate(5deg);
+    }
+    60% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    80% {
+        transform: translateY(0) rotate(5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0);
+        filter: brightness(1.5);
+    }
+}
+
+/* 烟花动画 */
+.animation-container.resolved {
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: explode 1.5s forwards;
+    opacity: 0;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.resolve-message {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+    opacity: 0;
+    animation: fadeMessage 4s forwards;
+}
+
+@keyframes fadeMessage {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(145deg, var(--deep-blue), var(--medium-blue));
+            background-attachment: fixed;
+            color: var(--light-text);
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 高级背景效果 */
+        .ocean-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .light-source {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(122, 185, 255, 0) 70%);
+            top: -300px;
+            right: -200px;
+            opacity: 0.1;
+            filter: blur(60px);
+            animation: lightShimmer 15s ease-in-out infinite alternate;
+        }
+        
+        .light-source.bottom {
+            top: auto;
+            right: auto;
+            bottom: -300px;
+            left: -200px;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, var(--accent-blue) 0%, rgba(90, 155, 213, 0) 70%);
+            animation-delay: 7s;
+        }
+        
+        @keyframes lightShimmer {
+            0%, 100% { opacity: 0.1; transform: scale(1) translate(0, 0); }
+            50% { opacity: 0.15; transform: scale(1.1) translate(30px, -20px); }
+        }
+        
+        .depth-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%235a9bd5' fill-opacity='0.05'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='25' cy='25' r='0.5'/%3E%3Ccircle cx='40' cy='40' r='0.75'/%3E%3Ccircle cx='55' cy='55' r='0.5'/%3E%3Ccircle cx='70' cy='70' r='0.6'/%3E%3Ccircle cx='85' cy='85' r='0.8'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        /* 气泡效果 */
+        .bubble-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .bubble {
+            position: absolute;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.15), 
+                rgba(255,255,255,0.03));
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: bubbleFloat linear infinite;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        
+        @keyframes bubbleFloat {
+            0% {
+                transform: translateY(100vh) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(50vh) scale(1.05) rotate(45deg);
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(0) scale(0.8) rotate(90deg);
+                opacity: 0;
+            }
+        }
+        
+        .app-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            box-shadow: var(--glass-shadow), 0 0 20px rgba(90, 155, 213, 0.15);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0), 
+                var(--glass-highlight),
+                rgba(255,255,255,0));
+            z-index: 2;
+        }
+        
+        header {
+            padding: 45px 50px 25px;
             text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        header h1 {
+            font-weight: 200;
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, var(--light-text), var(--accent-glow));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 4px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0), 
+                var(--glass-highlight),
+                rgba(255,255,255,0));
+        }
+        
+        .screen {
+            display: none;
+            padding: 30px 50px 60px;
+            position: relative;
+        }
+        
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .welcome-message h2 {
+            font-weight: 300;
+            font-size: 1.9rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--light-text), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .welcome-message p {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        
+        /* 高级瓶子动画 - 主页 */
+        .bottle-scene {
+            width: 100%;
+            height: 230px;
+            margin: 20px auto 40px;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .floating-bottle {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: floatBottle 12s ease-in-out infinite;
+        }
+        
+        @keyframes floatBottle {
+            0%, 100% { transform: translateY(0) rotate(0deg) translateZ(0); }
+            25% { transform: translateY(-15px) rotate(2deg) translateZ(10px); }
+            50% { transform: translateY(5px) rotate(-1deg) translateZ(-10px); }
+            75% { transform: translateY(-10px) rotate(1deg) translateZ(5px); }
+        }
+        
+        .bottle-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .bottle-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+        }
+        
+        .bottle-glow {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(122, 185, 255, 0.25) 0%, rgba(122, 185, 255, 0) 70%);
+            border-radius: 50%;
+            top: -25%;
+            left: -25%;
+            filter: blur(20px);
+            animation: glowPulse 6s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+        
+        @keyframes glowPulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            100% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        .bottle-reflection {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            bottom: -40px;
+            left: 0;
+            filter: blur(3px);
+            transform: scaleY(-0.3);
+            transform-origin: top;
+            opacity: 0.3;
+            animation: reflectionShimmer 6s ease-in-out infinite;
+        }
+        
+        @keyframes reflectionShimmer {
+            0%, 100% { opacity: 0.3; transform: scaleY(-0.3); }
+            50% { opacity: 0.4; transform: scaleY(-0.4); }
+        }
+        
+        .water-particles {
+            position: absolute;
+            width: 200%;
+            height: 40px;
+            background: linear-gradient(90deg, 
+                rgba(90, 155, 213, 0), 
+                rgba(90, 155, 213, 0.1), 
+                rgba(90, 155, 213, 0));
+            bottom: -20px;
+            left: -50%;
+            border-radius: 50%;
+            filter: blur(8px);
+            animation: waterFlow 8s linear infinite;
+        }
+        
+        @keyframes waterFlow {
+            0% { transform: translateX(-30px); opacity: 0.2; }
+            50% { opacity: 0.4; }
+            100% { transform: translateX(30px); opacity: 0.2; }
+        }
+        
+        /* 哲学引言 */
+        .philosophy-quote {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 35px 40px;
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 85%;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .philosophy-quote::before,
+        .philosophy-quote::after {
+            content: '"';
+            position: absolute;
+            font-size: 80px;
+            font-family: Georgia, serif;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .philosophy-quote::before {
+            top: 10px;
+            left: 15px;
+        }
+        
+        .philosophy-quote::after {
+            bottom: -30px;
+            right: 15px;
+            transform: rotate(180deg);
+        }
+        
+        .philosophy-quote p {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--light-text);
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        
+        .quote-glow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(90, 155, 213, 0.2) 0%, rgba(90, 155, 213, 0) 70%);
+            border-radius: 50%;
+            filter: blur(15px);
+            z-index: 0;
+        }
+        
+        .quote-glow.top-left {
+            top: -50px;
+            left: -50px;
+        }
+        
+        .quote-glow.bottom-right {
+            bottom: -50px;
+            right: -50px;
+        }
+        
+        /* 主页按钮 */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 340px;
+            margin: 50px auto;
+        }
+        
+        button {
+            border: none;
+            border-radius: 50px;
+            padding: 18px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            font-family: 'Noto Sans SC', sans-serif;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            font-weight: 400;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0), 
+                rgba(255,255,255,0.2), 
+                rgba(255,255,255,0));
+            transition: all 0.5s ease;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, var(--accent-blue), var(--light-blue));
+            color: var(--light-text);
+            box-shadow: 0 5px 20px rgba(90, 155, 213, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(90, 155, 213, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+        
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--light-text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .growth-btn {
+            background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+            color: var(--light-text);
+            box-shadow: 0 5px 20px rgba(46, 125, 50, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .growth-btn:hover {
+            background: linear-gradient(135deg, #5acd5e, var(--success-dark));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(46, 125, 50, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+        
+        /* 屏幕标题 */
+        .screen-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .screen-header h2 {
+            font-weight: 300;
+            font-size: 1.8rem;
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+            color: var(--light-text);
+            letter-spacing: 1px;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--light-text);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            position: absolute;
+            left: 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .back-btn .material-icons {
+            font-size: 20px;
+        }
+        
+        /* 创建烦恼表单 */
+        .create-worry-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--secondary-text);
+            font-weight: 300;
+            font-size: 1.05rem;
+        }
+        
+        input[type="text"], 
+        input[type="number"], 
+        textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-text);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        input[type="text"]:focus, 
+        input[type="number"]:focus, 
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 5px 15px rgba(90, 155, 213, 0.15);
+        }
+        
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .char-counter {
+            text-align: right;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+        }
+        
+        /* 情绪选择器 */
+        .emotion-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .emotion {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: calc(20% - 12px);
+        }
+        
+        .emotion:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .emotion.selected {
+            background: rgba(90, 155, 213, 0.2);
+            border-color: rgba(90, 155, 213, 0.5);
+            box-shadow: 0 5px 15px rgba(90, 155, 213, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .emotion-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .emotion-label {
+            font-size: 0.9rem;
+        }
+        
+        /* 强度滑块 */
+        .intensity-slider {
+            padding: 0 15px;
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(90, 155, 213, 0.5));
+            outline: none;
+            margin-bottom: 10px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .intensity-labels {
+            display: flex;
+            justify-content: space-between;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+        
+        /* 封存瓶子界面 */
+        .seal-worry-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 瓶子选择器 */
+        .bottle-selector {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .bottle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 15px;
+            border-radius: 15px;
+            width: 30%;
+        }
+        
+        .bottle:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+        }
+        
+        .bottle.selected {
+            background: rgba(90, 155, 213, 0.1);
+            border: 1px solid rgba(90, 155, 213, 0.3);
+            box-shadow: 0 5px 15px rgba(90, 155, 213, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .bottle-image {
+            width: 60px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+            transition: all 0.3s ease;
+        }
+        
+        .classic-bottle {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 60 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20C20 20 20 30 20 35L15 40C15 40 12 45 12 50V90C12 95 15 100 30 100C45 100 48 95 48 90V50C48 45 45 40 45 40L40 35C40 30 40 20 40 20H20Z' fill='rgba(255,255,255,0.2)' stroke='%23ffffff' stroke-width='1.5'/%3E%3Cellipse cx='30' cy='20' rx='10' ry='3' fill='rgba(255,255,255,0.15)' stroke='%23ffffff' stroke-width='1.5'/%3E%3Crect x='25' y='5' width='10' height='15' fill='rgba(255,255,255,0.15)' stroke='%23ffffff' stroke-width='1.5'/%3E%3C/svg%3E");
+        }
+        
+        .vintage-bottle {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 60 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 30C20 30 20 35 25 35C25 35 25 45 20 50C15 55 15 60 15 65V90C15 95 20 100 30 100C40 100 45 95 45 90V65C45 60 45 55 40 50C35 45 35 35 35 35C40 35 40 30 40 30H20Z' fill='rgba(255,255,255,0.2)' stroke='%23ffffff' stroke-width='1.5'/%3E%3Cellipse cx='30' cy='30' rx='10' ry='2' fill='rgba(255,255,255,0.15)' stroke='%23ffffff' stroke-width='1.5'/%3E%3Crect x='25' y='15' width='10' height='15' fill='rgba(255,255,255,0.15)' stroke='%23ffffff' stroke-width='1.5'/%3E%3C/svg%3E");
+        }
+        
+        .round-bottle {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 60 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 20C40 20 50 45 50 70C50 95 45 100 30 100C15 100 10 95 10 70C10 45 20 20 30 20Z' fill='rgba(255,255,255,0.2)' stroke='%23ffffff' stroke-width='1.5'/%3E%3Cellipse cx='30' cy='20' rx='5' ry='2' fill='rgba(255,255,255,0.15)' stroke='%23ffffff' stroke-width='1.5'/%3E%3Crect x='27.5' y='10' width='5' height='10' fill='rgba(255,255,255,0.15)' stroke='%23ffffff' stroke-width='1.5'/%3E%3C/svg%3E");
+        }
+        
+        .bottle span {
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+        
+        /* 时间选择器 */
+        .time-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .time-option {
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .time-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .time-option.selected {
+            background: rgba(90, 155, 213, 0.2);
+            border-color: rgba(90, 155, 213, 0.3);
+            box-shadow: 0 5px 15px rgba(90, 155, 213, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .time-value {
+            color: var(--light-text);
+            font-size: 0.95rem;
+        }
+        
+        #custom-time-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        
+        #custom-time-input input {
+            width: 80px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* 瓶子预览 */
+        .bottle-preview {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .bottle-preview .bottle-image {
+            width: 80px;
+            height: 160px;
+            animation: gentleFloat 5s ease-in-out infinite;
+        }
+        
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .full-width {
+            width: 100%;
+        }
+        
+        /* 瓶子列表 */
+        .bottles-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px 10px;
+            text-align: center;
+            border-radius: 12px;
+            background: none;
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+            border: none;
+            transition: all 0.3s ease;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: none;
+        }
+        
+        .tab-btn:hover {
+            color: var(--light-text);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(0);
+        }
+        
+        .tab-btn.active {
+            background: rgba(90, 155, 213, 0.15);
+            color: var(--light-text);
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(90, 155, 213, 0.2);
+        }
+        
+        .count-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-text);
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+        
+        .bottles-container {
+            position: relative;
+            min-height: 300px;
+        }
+        
+        .bottle-tab {
+            display: none;
+        }
+        
+        .bottle-tab.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            animation: fadeScale 0.5s ease;
+        }
+        
+        @keyframes fadeScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .empty-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--secondary-text);
+            width: 100%;
+        }
+        
+        .empty-state .material-icons {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+        }
+        
+        .bottle-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bottle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .bottle-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: rgba(90, 155, 213, 0.2);
+        }
+        
+        .bottle-card .bottle-image {
+            width: 50px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+        
+        .bottle-card .bottle-image.glow {
+            animation: bottleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes bottleGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(90, 155, 213, 0.3)); }
+            100% { filter: drop-shadow(0 0 15px rgba(90, 155, 213, 0.6)); }
+        }
+        
+        .bottle-card-content {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .bottle-card-content h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--light-text);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .bottle-info {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+        }
+        
+        .emotion-tag {
+            background: rgba(90, 155, 213, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+        
+        .countdown {
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            margin-top: 5px;
+        }
+        
+        .early-open-list-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .early-open-list-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(0);
+        }
+        
+        .early-open-list-btn .material-icons {
+            font-size: 16px;
+            color: var(--light-text);
+        }
+        
+        /* 瓶子详情页 */
+        .bottle-detail-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bottle-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .bottle-header::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0), 
+                var(--glass-highlight),
+                rgba(255,255,255,0));
+        }
+        
+        .bottle-header h3 {
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+        
+        .bottle-meta {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+        
+        .bottle-status-section {
+            margin-top: 40px;
+        }
+        
+        .bottle-status {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .status-info {
+            width: 100%;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .status-info p {
+            color: var(--light-text);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .time-remaining {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border-radius: 15px;
+            background: rgba(90, 155, 213, 0.1);
+            border: 1px solid rgba(90, 155, 213, 0.2);
+        }
+        
+        .time-remaining .material-icons {
+            color: var(--accent-blue);
+        }
+        
+        #time-left {
+            color: var(--light-text);
+            font-weight: 500;
+        }
+        
+        .status-philosophy {
+            font-style: italic;
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+            max-width: 400px;
+            font-size: 0.95rem;
         }
         
         .early-open-option {
@@ -26,14 +1313,585 @@
             align-items: center;
         }
         
+        .small-btn {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .early-open-hint {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+            max-width: 300px;
+        }
+        
+        /* 打开状态 */
+        #openable-bottle {
+            width: 70px;
+            height: 140px;
+            animation: gentleGlow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        @keyframes gentleGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(90, 155, 213, 0.3)); }
+            100% { filter: drop-shadow(0 0 25px rgba(90, 155, 213, 0.7)); }
+        }
+        
+        /* 已打开状态 */
+        .bottle-content {
+            width: 100%;
+            text-align: left;
+        }
+        
+        .bottle-content h4 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: var(--light-text);
+        }
+        
+        #detail-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            color: var(--secondary-text);
+            line-height: 1.8;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .worry-question {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .worry-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .action-btn .material-icons {
+            font-size: 30px;
+        }
+        
+        .gone-btn {
+            background: rgba(76, 175, 80, 0.1);
+            color: #a5d6a7;
+        }
+        
+        .gone-btn:hover {
+            background: rgba(76, 175, 80, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.15);
+        }
+        
+        .remains-btn {
+            background: rgba(255, 152, 0, 0.1);
+            color: #ffcc80;
+        }
+        
+        .remains-btn:hover {
+            background: rgba(255, 152, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.15);
+        }
+        
+        /* 反思状态 */
+        .reflection-content {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .reflection-content h4 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+        
+        .reflection-philosophy {
+            font-style: italic;
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        #reflection-text {
+            min-height: 150px;
+            margin-bottom: 20px;
+        }
+        
+        /* 已解决状态 */
+        .resolved-content {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .resolved-icon {
+            margin-bottom: 20px;
+        }
+        
+        .resolved-icon .material-icons {
+            font-size: 50px;
+            color: var(--success-color);
+            animation: celebrateIcon 3s ease-in-out infinite;
+        }
+        
+        @keyframes celebrateIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        
+        .resolved-content h4 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+        
+        .reflection-display {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .reflection-display h5 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: var(--light-text);
+        }
+        
+        #saved-reflection {
+            color: var(--secondary-text);
+            line-height: 1.8;
+        }
+        
+        /* 重新封存状态 */
+        .reseal-content {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .reseal-content h4 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: var(--light-text);
+        }
+        
+        .reseal-content p {
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+        }
+        
+        .reseal-time-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            background: rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
         .version-info {
             font-size: 0.7rem;
-            color: #999;
+            opacity: 0.7;
             margin-top: 5px;
+            color: var(--secondary-text);
         }
+        
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .screen {
+                padding: 20px 30px 40px;
+            }
+            
+            .philosophy-quote {
+                padding: 25px 20px;
+            }
+            
+            .emotion-selector {
+                gap: 10px;
+            }
+            
+            .emotion {
+                padding: 10px 15px;
+                width: calc(33.33% - 7px);
+            }
+            
+            .bottle-tab.active {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .worry-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-btn {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2.3rem;
+            }
+            
+            .screen {
+                padding: 15px 20px 30px;
+            }
+            
+            .philosophy-quote {
+                padding: 20px 15px;
+            }
+            
+            .emotion {
+                width: calc(50% - 5px);
+            }
+            
+            .bottle-selector {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .bottle {
+                width: 60%;
+            }
+            
+            .bottles-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 10px 5px;
+                font-size: 0.85rem;
+            }
+            
+            .count-badge {
+                padding: 2px 6px;
+                font-size: 0.75rem;
+            }
+            
+            .bottle-tab.active {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 添加到你的index.html文件中的<style>标签内 */
+
+/* 改善空间利用率的自适应设计 */
+.app-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow), 0 0 20px rgba(90, 155, 213, 0.15);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 40px);
+}
+
+/* 更紧凑的标题区域 */
+header {
+    padding: 20px 25px 15px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+header h1 {
+    font-weight: 200;
+    font-size: 2.2rem;
+    margin-bottom: 0;
+    background: linear-gradient(to right, var(--light-text), var(--accent-glow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 3px;
+}
+
+/* 主内容区域紧凑调整 - 修正屏幕显示问题 */
+.screen {
+    display: none; /* 确保默认隐藏 */
+    padding: 15px 25px 20px;
+    position: relative;
+    flex: 1;
+    flex-direction: column;
+}
+
+.screen.active {
+    display: flex; /* 使用flex布局来替代block显示 */
+    animation: fadeIn 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* 更紧凑的哲学引用 */
+.philosophy-quote {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px 25px;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 85%;
+    text-align: center;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.philosophy-quote p {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--light-text);
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+/* 更紧凑的按钮组 */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 320px;
+    margin: 25px auto;
+}
+
+button {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+/* 更紧凑的表单元素 */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+input[type="text"], 
+input[type="number"], 
+textarea {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+}
+
+/* 更紧凑的瓶子场景 */
+.bottle-scene {
+    height: 180px;
+    margin: 15px auto 25px;
+}
+
+.floating-bottle {
+    width: 120px;
+    height: 120px;
+}
+
+/* 压缩页脚 */
+footer {
+    padding: 15px 0;
+    font-size: 0.8rem;
+}
+
+/* 欢迎信息更紧凑 */
+.welcome-message {
+    margin-bottom: 20px;
+}
+
+.welcome-message h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.welcome-message p {
+    font-size: 1rem;
+    max-width: 90%;
+}
+
+/* 更紧凑的瓶子选择器 */
+.bottle-selector {
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.bottle {
+    padding: 10px;
+}
+
+.bottle-image {
+    width: 50px;
+    height: 100px;
+}
+
+/* 更紧凑的时间选择器 */
+.time-selector {
+    gap: 8px;
+}
+
+.time-option {
+    padding: 10px 15px;
+}
+
+/* 瓶子预览区域 */
+.bottle-preview {
+    margin: 20px 0;
+}
+
+.bottle-preview .bottle-image {
+    width: 70px;
+    height: 140px;
+}
+
+/* 自适应高度内容区 */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 更灵活的列表布局 */
+.bottle-tab.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+/* 高度自适应方案 */
+@media (min-height: 700px) {
+    .app-container {
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+}
+
+@media (max-height: 700px) {
+    .bottle-scene {
+        height: 120px;
+        margin: 10px auto 20px;
+    }
+    
+    .floating-bottle {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .philosophy-quote {
+        padding: 15px 20px;
+        margin: 15px auto;
+    }
+    
+    .welcome-message h2 {
+        font-size: 1.4rem;
+    }
+    
+    .action-buttons {
+        margin: 20px auto;
+    }
+    
+    button {
+        padding: 12px 18px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+}
+
+/* 更小屏幕的额外自适应 */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .screen {
+        padding: 10px 15px 15px;
+    }
+    
+    .bottle-selector {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .bottle {
+        width: 100%;
+    }
+}
+
+/* 确保滚动条美观 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
     </style>
 </head>
 <body>
+    <div class="ocean-bg">
+        <div class="light-source"></div>
+        <div class="light-source bottom"></div>
+        <div class="depth-particles"></div>
+    </div>
+    
+    <div class="bubble-container" id="bubbleContainer"></div>
+    
     <div class="app-container">
         <header>
             <h1>烦恼瓶子</h1>
@@ -42,13 +1900,56 @@
         <main id="app-content">
             <!-- 主页 -->
             <div id="home-screen" class="screen active">
+                <div class="bottle-scene">
+                    <div class="floating-bottle">
+                        <div class="bottle-glow"></div>
+                        <div class="bottle-inner">
+                            <svg class="bottle-svg" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="bottleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+                                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.1"/>
+                                    </linearGradient>
+                                    <filter id="bottleGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                                        <feOffset dx="0" dy="2"/>
+                                        <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0"/>
+                                        <feMerge>
+                                            <feMergeNode/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <path d="M50 20C50 20 50 30 50 40L40 50C40 50 35 55 35 65V100C35 105 40 110 70 110C100 110 105 105 105 100V65C105 55 100 50 100 50L90 40C90 30 90 20 90 20H50Z" fill="url(#bottleGradient)" stroke="#FFFFFF" stroke-width="1.5" filter="url(#bottleGlow)"/>
+                                <ellipse cx="70" cy="20" rx="20" ry="5" fill="rgba(255,255,255,0.15)" stroke="#FFFFFF" stroke-width="1.5"/>
+                                <rect x="60" y="5" width="20" height="15" fill="rgba(255,255,255,0.15)" stroke="#FFFFFF" stroke-width="1.5"/>
+                                <ellipse cx="70" cy="20" rx="15" ry="3" fill="rgba(255,255,255,0.3)" stroke="none"/>
+                                <path d="M40 70C40 70 50 85 70 85C90 85 100 70 100 70" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
+                            </svg>
+                            <div class="bottle-reflection">
+                                <svg class="bottle-svg" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M50 20C50 20 50 30 50 40L40 50C40 50 35 55 35 65V100C35 105 40 110 70 110C100 110 105 105 105 100V65C105 55 100 50 100 50L90 40C90 30 90 20 90 20H50Z" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                                    <ellipse cx="70" cy="20" rx="20" ry="5" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                                    <rect x="60" y="5" width="20" height="15" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="water-particles"></div>
+                    </div>
+                </div>
+                
                 <div class="welcome-message">
                     <h2>欢迎使用烦恼瓶子</h2>
                     <p>记录你的烦恼，给它一段时间，看看它是否会自行消散</p>
                 </div>
+                
                 <div class="philosophy-quote">
-                    <p>"给烦恼一个期限，它往往会在到期前消失"</p>
+                    <div class="quote-glow top-left"></div>
+                    <div class="quote-glow bottom-right"></div>
+                    <p>给烦恼一个期限，它往往会在到期前消失</p>
                 </div>
+                
                 <div class="action-buttons">
                     <button id="create-worry-btn" class="primary-btn">
                         <span class="material-icons">add</span> 记录新烦恼
@@ -56,7 +1957,7 @@
                     <button id="view-bottles-btn" class="secondary-btn">
                         <span class="material-icons">inbox</span> 查看我的瓶子
                     </button>
-                     <button id="view-growth-btn" class="primary-btn growth-btn">
+                    <button id="view-growth-btn" class="growth-btn">
                         <span class="material-icons">celebration</span> 感悟我的成长
                     </button>
                 </div>
@@ -72,7 +1973,9 @@
                 </div>
                 
                 <div class="philosophy-quote">
-                    <p>"将烦恼写下来，是看清它真实样貌的第一步"</p>
+                    <div class="quote-glow top-left"></div>
+                    <div class="quote-glow bottom-right"></div>
+                    <p>将烦恼写下来，是看清它真实样貌的第一步</p>
                 </div>
                 
                 <div class="create-worry-form">
@@ -141,14 +2044,16 @@
                 </div>
                 
                 <div class="philosophy-quote">
-                    <p>"时间是解决问题的良药，耐心是承载良药的容器"</p>
+                    <div class="quote-glow top-left"></div>
+                    <div class="quote-glow bottom-right"></div>
+                    <p>时间是解决问题的良药，耐心是承载良药的容器</p>
                 </div>
                 
                 <div class="seal-worry-content">
                     <div class="form-group">
                         <label>选择一个瓶子</label>
                         <div class="bottle-selector">
-                            <div class="bottle" data-bottle="classic">
+                            <div class="bottle selected" data-bottle="classic">
                                 <div class="bottle-image classic-bottle"></div>
                                 <span>经典瓶</span>
                             </div>
@@ -169,7 +2074,7 @@
                             <div class="time-option" data-days="3">
                                 <span class="time-value">3天</span>
                             </div>
-                            <div class="time-option" data-days="7">
+                            <div class="time-option selected" data-days="7">
                                 <span class="time-value">1周</span>
                             </div>
                             <div class="time-option" data-days="14">
@@ -208,7 +2113,9 @@
                 </div>
                 
                 <div class="philosophy-quote">
-                    <p>"每一个被解决的烦恼，都是通往内心平静的阶梯"</p>
+                    <div class="quote-glow top-left"></div>
+                    <div class="quote-glow bottom-right"></div>
+                    <p>每一个被解决的烦恼，都是通往内心平静的阶梯</p>
                 </div>
                 
                 <div class="bottles-tabs">
@@ -354,7 +2261,7 @@
                                     <div class="time-option" data-days="3">
                                         <span class="time-value">3天</span>
                                     </div>
-                                    <div class="time-option" data-days="7">
+                                    <div class="time-option selected" data-days="7">
                                         <span class="time-value">1周</span>
                                     </div>
                                     <div class="time-option" data-days="14">
@@ -376,11 +2283,70 @@
         
         <footer>
             <p>烦恼瓶子 &copy; 2025</p>
-            <p class="version-info">版本 1.0.0</p>
+            <p class="version-info">版本 0.8.0</p>
         </footer>
     </div>
     
     <script src="js/animations.js"></script>
     <script src="js/app.js"></script>
+    
+    <script>
+        // 创建高级气泡效果
+        function createBubbles() {
+            const container = document.getElementById('bubbleContainer');
+            const bubbleCount = 20;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                // 随机大小
+                const size = Math.random() * 40 + 15;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // 随机位置
+                const posX = Math.random() * 100;
+                bubble.style.left = `${posX}%`;
+                
+                // 随机延迟和持续时间
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 15 + 15;
+                bubble.style.animation = `bubbleFloat ${duration}s ${delay}s linear infinite`;
+                
+                container.appendChild(bubble);
+            }
+        }
+        
+        // 页面加载后创建高级效果
+        window.addEventListener('load', () => {
+            createBubbles();
+            
+            // 按钮悬停音效
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    const audio = new Audio('data:audio/mp3;base64,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');
+                    audio.volume = 0.2;
+                    audio.play().catch(e => console.log('Audio play failed:', e));
+                });
+            });
+            
+            // 主页瓶子点击效果
+            const bottle = document.querySelector('.floating-bottle');
+            if (bottle) {
+                bottle.addEventListener('click', () => {
+                    bottle.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        bottle.style.transform = '';
+                    }, 300);
+                    
+                    const audio = new Audio('data:audio/mp3;base64,SUQzAwAAAAAfdlRJVDIAAAAUAAAAYm90dGxlX2NsaWNrX3NvdW5kX2QAAAAAPEZMQUMgZFwAAAAASW5mbwAAAA8AAAAUAABbWgAGBg0NDRQUGxshISEoKC4uLjU1Ozs7QkJISEhPT1VVVVxcYmJiaGhubm51dXt7e4KCiIiIj4+VlZWcnKKioqmpb29vAAAA//uQwAAD/////gRgACEiTUAAAAAASW5mbwAAAA8AAAAUAABbWgAGBg0NDRQUGxshISEoKC4uLjU1Ozs7QkJISEhPT1VVVVxcYmJiaGhubm51dXt7e4KCiIiIj4+VlZWcnKKioqmpb29vZmxhYwAAAEZMQUMAAAA9AQCgAMAQABBQACAb/8xJLLBMKwx3/1VVVVVVVVYxMTEhIiL/yIiL/0REWEREQMAQDAEAAAAATGF2YzU3Ljc2AAAAAAAAAAAAJAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuOTlyAc0AAAAAAAAAABQgJAPoQQAAgAAAWlqZw3YYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQRAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                    audio.volume = 0.4;
+                    audio.play().catch(e => console.log('Audio play failed:', e));
+                });
+            }
+        });
+    </script>
 </body>
 </html>

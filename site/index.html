@@ -1,1 +1,1427 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>关于烦恼种子</title><style>body{margin:0;background:#f7f4ec;color:#173d2d;font-family:"Songti SC",serif}.wrap{max-width:920px;margin:auto;padding:48px 24px 90px}nav{display:flex;justify-content:space-between}a{color:#396b49}.hero{padding:13vh 0 10vh}.hero h1{font-size:clamp(48px,10vw,92px);font-weight:500;margin:0}.hero p{font:20px/1.8 system-ui;color:#6e776f;max-width:620px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#d8d4c8;border:1px solid #d8d4c8}.grid section{background:#fffdf8;padding:36px}.grid h2{font-weight:500}.grid p{font:16px/1.8 system-ui;color:#59665d}.privacy{margin-top:70px;border-top:1px solid #d8d4c8;padding-top:35px;font:15px/1.8 system-ui;color:#59665d}@media(max-width:650px){.grid{grid-template-columns:1fr}}</style></head><body><main class="wrap"><nav><strong>烦恼种子</strong><a href="../">打开应用</a></nav><header class="hero"><h1>烦恼终会过去，<br>成长可以留下。</h1><p>用一段语音种下此刻的烦恼。每次行动、总结和改变都会成为新的枝叶；即使问题暂时没有解决，它也会继续生长。</p></header><div class="grid"><section><h2>1. 说出来</h2><p>最长录音 60 秒，也可以直接输入文字。为这件事命名，让模糊的情绪先变得清晰。</p></section><section><h2>2. 种下去</h2><p>选择回访时间。它不是被封存和遗忘，而是进入一段可以持续记录的过程。</p></section><section><h2>3. 继续生长</h2><p>每次追加行动、变化、失败或反思，都会形成新的生长记录。无法立刻解决并不意味着停滞。</p></section><section><h2>4. 结出果实</h2><p>问题解决后，树会结果；总结和改进仍然保留，成为以后能够看见的成长。</p></section></div><section class="privacy"><h2>隐私与数据</h2><p>无需账号。文字记录保存在当前浏览器，录音保存在设备的本地数据库，不会自动上传服务器。清理浏览器数据前，请先确认是否仍需保留记录。</p></section></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="WorrySeed，烦恼种子。把尚未想明白的事轻轻埋下，让时间替它生根，让你在某个季节重新听见自己。"
+    />
+    <title>WorrySeed — 烦恼种子</title>
+    <style>
+      :root {
+        --forest-950: #101b18;
+        --forest-900: #17251f;
+        --forest-800: #243b2d;
+        --forest-700: #42634e;
+        --leaf: #82a86b;
+        --cream: #f6f1de;
+        --cream-2: #e9e2c9;
+        --soil: #9b7048;
+        --coral: #e77b68;
+        --gold: #f5d98a;
+        --ink: #1b2a24;
+        --muted: #6d756b;
+        --line: rgba(27, 42, 36, 0.15);
+        --display: "Avenir Next", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+        --sans: Inter, "PingFang SC", "Noto Sans CJK SC", ui-sans-serif, system-ui,
+          -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --serif: "Songti SC", "Noto Serif CJK SC", "STSong", Georgia, "Times New Roman", serif;
+        --shadow: 0 25px 70px rgba(10, 22, 17, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 8%, rgba(245, 217, 138, 0.13), transparent 23%),
+          var(--cream);
+        font-family: var(--sans);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .page-shell {
+        overflow: hidden;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: absolute;
+        z-index: 4;
+        top: 0;
+        left: 0;
+        right: 0;
+        color: var(--cream);
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 88px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--serif);
+        font-size: 17px;
+        letter-spacing: 0.01em;
+      }
+
+      .brand-mark {
+        position: relative;
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        border: 2px solid var(--gold);
+        border-radius: 50% 50% 48% 48%;
+        transform: rotate(45deg);
+      }
+
+      .brand-mark::after {
+        position: absolute;
+        right: -3px;
+        bottom: 16px;
+        width: 10px;
+        height: 4px;
+        border-radius: 100% 0 100% 0;
+        background: var(--leaf);
+        content: "";
+        transform: rotate(-45deg);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: rgba(246, 241, 222, 0.72);
+        font-family: var(--serif);
+        font-size: 15px;
+      }
+
+      .nav-links a {
+        transition: color 180ms ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        color: var(--gold);
+      }
+
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 16px;
+        border: 1px solid rgba(245, 217, 138, 0.65);
+        border-radius: 999px;
+        color: var(--gold);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 760px;
+        color: var(--cream);
+        background:
+          radial-gradient(circle at 75% 20%, rgba(245, 217, 138, 0.2), transparent 11%),
+          radial-gradient(circle at 76% 28%, rgba(130, 168, 107, 0.25), transparent 30%),
+          radial-gradient(circle at 62% 88%, rgba(231, 123, 104, 0.16), transparent 24%),
+          var(--forest-950);
+      }
+
+      .hero::before {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(246, 241, 222, 0.18) 1px, transparent 1px);
+        background-size: 42px 42px;
+        content: "";
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 82%);
+        opacity: 0.14;
+      }
+
+      .hero::after {
+        position: absolute;
+        top: 112px;
+        right: 12%;
+        width: 210px;
+        height: 210px;
+        border: 1px solid rgba(245, 217, 138, 0.22);
+        border-radius: 50%;
+        box-shadow: 0 0 0 18px rgba(245, 217, 138, 0.025), 0 0 90px rgba(245, 217, 138, 0.08);
+        content: "";
+        pointer-events: none;
+        animation: moon-breathe 9s ease-in-out infinite;
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 0.94fr) minmax(420px, 1.06fr);
+        align-items: center;
+        gap: 56px;
+        min-height: 760px;
+        padding-top: 88px;
+        padding-bottom: 70px;
+      }
+
+      .hero-copy {
+        max-width: 590px;
+      }
+
+      .hero-copy h1 {
+        max-width: 620px;
+        margin: 0 0 28px;
+        color: var(--cream);
+        font-family: var(--serif);
+        font-size: clamp(48px, 6.3vw, 86px);
+        font-weight: 400;
+        letter-spacing: -0.035em;
+        line-height: 0.98;
+      }
+
+      .hero-copy h1 span {
+        color: var(--gold);
+      }
+
+      .hero-lead {
+        max-width: 500px;
+        margin: 0;
+        color: rgba(246, 241, 222, 0.74);
+        font-family: var(--serif);
+        font-size: 20px;
+        line-height: 1.9;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+        margin-top: 36px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        cursor: pointer;
+        font-family: var(--serif);
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        color: var(--forest-950);
+        background: var(--gold);
+      }
+
+      .button-primary:hover,
+      .button-primary:focus-visible {
+        background: #ffe8a6;
+      }
+
+      .button-ghost {
+        border-color: rgba(246, 241, 222, 0.24);
+        color: var(--cream);
+        background: rgba(246, 241, 222, 0.05);
+      }
+
+      .button-ghost:hover,
+      .button-ghost:focus-visible {
+        border-color: rgba(246, 241, 222, 0.55);
+        background: rgba(246, 241, 222, 0.1);
+      }
+
+      .hero-note {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 62px;
+        color: rgba(246, 241, 222, 0.5);
+        font-family: var(--serif);
+        font-size: 14px;
+        font-style: italic;
+        letter-spacing: 0.03em;
+      }
+
+      .hero-note::before {
+        width: 36px;
+        height: 1px;
+        background: var(--leaf);
+        content: "";
+      }
+
+      .atlas-frame {
+        position: relative;
+        padding: 18px;
+        border: 1px solid rgba(246, 241, 222, 0.22);
+        border-radius: 22px 22px 38px 22px;
+        background: rgba(246, 241, 222, 0.075);
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28), 0 0 0 9px rgba(245, 217, 138, 0.025);
+        transform: rotate(-1.5deg);
+        animation: paper-float 8s ease-in-out infinite;
+      }
+
+      .atlas-frame::before,
+      .atlas-frame::after {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 1px solid var(--gold);
+        content: "";
+        opacity: 0.8;
+      }
+
+      .atlas-frame::before {
+        top: -7px;
+        left: 28px;
+        border-right: 0;
+        border-bottom: 0;
+      }
+
+      .atlas-frame::after {
+        right: 28px;
+        bottom: -7px;
+        border-top: 0;
+        border-left: 0;
+      }
+
+      .atlas-screen {
+        display: block;
+        width: 100%;
+        border-radius: 17px;
+        image-rendering: pixelated;
+      }
+
+      .cover-screen {
+        display: block;
+        width: 100%;
+        border-radius: 14px;
+        image-rendering: pixelated;
+      }
+
+      .atlas-caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 4px 0;
+        color: rgba(246, 241, 222, 0.54);
+        font-family: var(--serif);
+        font-size: 12px;
+        font-style: italic;
+        letter-spacing: 0.03em;
+      }
+
+      .scroll-cue {
+        position: absolute;
+        bottom: 26px;
+        left: 50%;
+        z-index: 2;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        color: rgba(246, 241, 222, 0.44);
+        font-family: var(--serif);
+        font-size: 13px;
+        font-style: italic;
+        letter-spacing: 0.04em;
+        transform: translateX(-50%);
+      }
+
+      .scroll-cue::after {
+        width: 1px;
+        height: 42px;
+        background: linear-gradient(var(--gold), transparent);
+        content: "";
+      }
+
+      @keyframes paper-float {
+        0%,
+        100% {
+          transform: rotate(-1.5deg) translateY(0);
+        }
+        50% {
+          transform: rotate(-0.5deg) translateY(-8px);
+        }
+      }
+
+      @keyframes moon-breathe {
+        0%,
+        100% {
+          opacity: 0.55;
+          transform: scale(0.98);
+        }
+        50% {
+          opacity: 0.9;
+          transform: scale(1.03);
+        }
+      }
+
+      .manifesto {
+        padding: 140px 0 150px;
+        background:
+          radial-gradient(circle at 86% 22%, rgba(231, 123, 104, 0.1), transparent 24%),
+          var(--cream);
+      }
+
+      .manifesto-inner {
+        display: grid;
+        grid-template-columns: 0.42fr 1fr;
+        gap: 64px;
+        align-items: start;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--coral);
+        font-family: var(--serif);
+        font-size: 15px;
+        font-style: italic;
+        letter-spacing: 0.04em;
+      }
+
+      .manifesto h2 {
+        max-width: 840px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(38px, 5.3vw, 72px);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.02;
+      }
+
+      .manifesto h2 em {
+        color: var(--coral);
+        font-style: normal;
+      }
+
+      .manifesto-bottom {
+        grid-column: 2;
+        max-width: 610px;
+        margin-top: -20px;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 18px;
+        line-height: 2;
+      }
+
+      .manifesto-bottom strong {
+        color: var(--ink);
+      }
+
+      .growth-section {
+        padding: 120px 0 140px;
+        color: var(--cream);
+        background:
+          radial-gradient(circle at 84% 16%, rgba(130, 168, 107, 0.16), transparent 28%),
+          var(--forest-900);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 48px;
+      }
+
+      .section-head h2 {
+        max-width: 670px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(38px, 5vw, 68px);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+      }
+
+      .section-head p {
+        max-width: 300px;
+        margin: 0;
+        color: rgba(246, 241, 222, 0.62);
+        font-family: var(--serif);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .growth-layout {
+        display: grid;
+        grid-template-columns: 0.7fr 1.3fr;
+        gap: 54px;
+        align-items: stretch;
+      }
+
+      .growth-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top: 1px solid rgba(246, 241, 222, 0.18);
+      }
+
+      .growth-step {
+        position: relative;
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(246, 241, 222, 0.18);
+        color: rgba(246, 241, 222, 0.54);
+        text-align: left;
+        background: transparent;
+        border-right: 0;
+        border-left: 0;
+        border-top: 0;
+        cursor: pointer;
+        transition: color 180ms ease, padding 180ms ease;
+      }
+
+      .growth-step:hover,
+      .growth-step:focus-visible,
+      .growth-step.is-active {
+        padding-left: 10px;
+        color: var(--cream);
+      }
+
+      .growth-index {
+        position: relative;
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin-top: 5px;
+        border: 1px solid rgba(245, 217, 138, 0.65);
+        border-radius: 50%;
+      }
+
+      .growth-index::after {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        content: "";
+      }
+
+      .growth-step strong {
+        display: block;
+        margin-bottom: 4px;
+        font-family: var(--serif);
+        font-size: 23px;
+        font-weight: 400;
+      }
+
+      .growth-step span:last-child {
+        display: block;
+        font-family: var(--serif);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .growth-stage {
+        position: relative;
+        min-height: 520px;
+        padding: 28px;
+        border: 1px solid rgba(246, 241, 222, 0.2);
+        border-radius: 28px 28px 42px 28px;
+        background:
+          linear-gradient(180deg, rgba(16, 27, 24, 0.04), rgba(16, 27, 24, 0.78)),
+          url("assets/worryseed-pixel-atlas.png") center / cover;
+        overflow: hidden;
+      }
+
+      .growth-stage::after {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 56% 44%, transparent 22%, rgba(16, 27, 24, 0.58) 86%);
+        content: "";
+        pointer-events: none;
+      }
+
+      .growth-stage-copy {
+        position: absolute;
+        right: 28px;
+        bottom: 26px;
+        left: 28px;
+        z-index: 1;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .growth-stage-copy h3 {
+        max-width: 460px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(32px, 4vw, 56px);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+      }
+
+      .growth-stage-copy p {
+        max-width: 230px;
+        margin: 0;
+        color: rgba(246, 241, 222, 0.72);
+        font-family: var(--serif);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .device-section {
+        padding: 130px 0 145px;
+        background:
+          radial-gradient(circle at 82% 18%, rgba(231, 123, 104, 0.09), transparent 26%),
+          var(--cream);
+      }
+
+      .device-intro {
+        display: grid;
+        grid-template-columns: 1fr 0.62fr;
+        gap: 90px;
+        align-items: end;
+      }
+
+      .device-intro h2 {
+        max-width: 720px;
+        margin: 20px 0 0;
+        font-family: var(--serif);
+        font-size: clamp(42px, 5.5vw, 76px);
+        font-weight: 400;
+        letter-spacing: -0.035em;
+        line-height: 1.02;
+      }
+
+      .device-intro h2 em {
+        color: var(--coral);
+        font-style: normal;
+      }
+
+      .device-intro > p {
+        max-width: 410px;
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 17px;
+        line-height: 2;
+      }
+
+      .device-screens {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        align-items: start;
+        margin-top: 76px;
+      }
+
+      .device-screen-card {
+        position: relative;
+        margin: 0;
+        padding: 10px 10px 20px;
+        border: 1px solid rgba(27, 42, 36, 0.1);
+        background: rgba(255, 252, 237, 0.72);
+        box-shadow: 0 22px 50px rgba(62, 59, 36, 0.12);
+        transform: rotate(-1.2deg);
+      }
+
+      .device-screen-card:nth-child(2) {
+        margin-top: 24px;
+        transform: rotate(1.1deg);
+      }
+
+      .device-screen-card:nth-child(3) {
+        transform: rotate(-0.6deg);
+      }
+
+      .device-screen-card:nth-child(4) {
+        margin-top: 24px;
+        transform: rotate(1.5deg);
+      }
+
+      .device-screen-card::before {
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        width: 58px;
+        height: 16px;
+        background: rgba(245, 217, 138, 0.48);
+        content: "";
+        opacity: 0.75;
+        transform: translateX(-50%) rotate(-2deg);
+      }
+
+      .device-screen-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+      }
+
+      .device-screen-card figcaption {
+        padding: 17px 6px 0;
+      }
+
+      .device-screen-card strong,
+      .device-screen-card span {
+        display: block;
+        font-family: var(--serif);
+      }
+
+      .device-screen-card strong {
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 400;
+      }
+
+      .device-screen-card span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .hardware-section {
+        padding: 130px 0;
+        background:
+          radial-gradient(circle at 12% 20%, rgba(130, 168, 107, 0.14), transparent 28%),
+          var(--cream-2);
+      }
+
+      .hardware-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+        align-items: start;
+      }
+
+      .hardware-copy h2 {
+        max-width: 560px;
+        margin: 20px 0 22px;
+        font-family: var(--serif);
+        font-size: clamp(40px, 5vw, 70px);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+
+      .hardware-context {
+        max-width: 500px;
+        margin: 24px 0 -4px !important;
+        color: var(--coral) !important;
+        font-family: var(--serif) !important;
+        font-size: 16px !important;
+        font-style: italic;
+        line-height: 1.7 !important;
+      }
+
+      .hardware-copy p {
+        max-width: 480px;
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 17px;
+        line-height: 1.9;
+      }
+
+      .hardware-list {
+        border-top: 1px solid var(--line);
+      }
+
+      .hardware-item {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 18px;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hardware-item-index {
+        color: var(--coral);
+        font-family: var(--serif);
+        font-size: 14px;
+        font-style: italic;
+      }
+
+      .hardware-item h3 {
+        margin: 0 0 5px;
+        font-family: var(--serif);
+        font-size: 25px;
+        font-weight: 400;
+      }
+
+      .hardware-item p {
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--serif);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .privacy-section {
+        padding: 120px 0;
+        color: var(--cream);
+        background:
+          radial-gradient(circle at 78% 30%, rgba(231, 123, 104, 0.12), transparent 26%),
+          var(--forest-950);
+      }
+
+      .privacy-grid {
+        display: grid;
+        grid-template-columns: 0.7fr 1.3fr;
+        gap: 80px;
+      }
+
+      .privacy-copy h2 {
+        margin: 18px 0 0;
+        font-family: var(--serif);
+        font-size: clamp(40px, 5vw, 66px);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+
+      .privacy-copy p {
+        max-width: 460px;
+        margin: 28px 0 0;
+        color: rgba(246, 241, 222, 0.64);
+        font-family: var(--serif);
+        font-size: 16px;
+        line-height: 1.85;
+      }
+
+      .principles {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 48px;
+      }
+
+      .principle {
+        padding: 23px 0;
+        border-top: 1px solid rgba(246, 241, 222, 0.18);
+      }
+
+      .principle:nth-child(-n + 2) {
+        border-top: 0;
+      }
+
+      .principle h3 {
+        margin: 0 0 8px;
+        color: var(--gold);
+        font-family: var(--serif);
+        font-size: 25px;
+        font-weight: 400;
+      }
+
+      .principle p {
+        margin: 0;
+        color: rgba(246, 241, 222, 0.57);
+        font-family: var(--serif);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .closing {
+        position: relative;
+        padding: 150px 0 160px;
+        text-align: center;
+        background:
+          radial-gradient(circle at center, rgba(130, 168, 107, 0.27), transparent 34%),
+          var(--forest-800);
+      }
+
+      .closing h2 {
+        max-width: 760px;
+        margin: 0 auto;
+        color: var(--cream);
+        font-family: var(--serif);
+        font-size: clamp(42px, 6vw, 82px);
+        font-weight: 400;
+        letter-spacing: -0.06em;
+        line-height: 0.98;
+      }
+
+      .closing p {
+        max-width: 470px;
+        margin: 25px auto 34px;
+        color: rgba(246, 241, 222, 0.66);
+        font-size: 16px;
+      }
+
+      .footer {
+        padding: 25px 0;
+        color: rgba(246, 241, 222, 0.46);
+        background: var(--forest-950);
+        font-family: var(--serif);
+        font-size: 13px;
+        font-style: italic;
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .reduced-motion *,
+      .reduced-motion *::before,
+      .reduced-motion *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+
+      @media (max-width: 900px) {
+        .hero-inner,
+        .manifesto-inner,
+        .growth-layout,
+        .device-intro,
+        .hardware-grid,
+        .privacy-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+        }
+
+        .hero-inner {
+          min-height: auto;
+          gap: 52px;
+          padding-top: 150px;
+          padding-bottom: 110px;
+        }
+
+        .hero-copy {
+          max-width: 680px;
+        }
+
+        .atlas-frame {
+          max-width: 680px;
+          margin: 0 auto;
+        }
+
+        .manifesto-bottom {
+          grid-column: auto;
+          margin-top: -20px;
+        }
+
+        .growth-layout {
+          gap: 35px;
+        }
+
+        .device-intro {
+          gap: 35px;
+        }
+
+        .device-screens {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          max-width: 720px;
+          margin-right: auto;
+          margin-left: auto;
+        }
+
+        .growth-nav {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 8px;
+          border-top: 0;
+        }
+
+        .growth-step {
+          display: block;
+          padding: 12px 8px;
+          border: 1px solid rgba(246, 241, 222, 0.18);
+          border-radius: 12px;
+        }
+
+        .growth-step:hover,
+        .growth-step:focus-visible,
+        .growth-step.is-active {
+          padding-left: 8px;
+          border-color: var(--gold);
+        }
+
+        .growth-step strong {
+          margin-top: 10px;
+          font-size: 18px;
+        }
+
+        .growth-step span:last-child {
+          display: none;
+        }
+
+        .growth-stage {
+          min-height: 480px;
+        }
+
+        .hardware-grid,
+        .privacy-grid {
+          gap: 52px;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .container {
+          width: min(100% - 32px, 560px);
+        }
+
+        .topbar-inner {
+          min-height: 72px;
+        }
+
+        .nav-links a:not(.nav-cta) {
+          display: none;
+        }
+
+        .hero-inner {
+          padding-top: 126px;
+          padding-bottom: 92px;
+        }
+
+        .hero-copy h1 {
+          font-size: clamp(47px, 15vw, 70px);
+        }
+
+        .hero-lead {
+          font-size: 16px;
+        }
+
+        .hero-note {
+          margin-top: 40px;
+        }
+
+        .atlas-frame {
+          padding: 8px;
+          border-radius: 18px;
+        }
+
+        .atlas-caption {
+          padding-right: 4px;
+          padding-left: 4px;
+          font-size: 8px;
+        }
+
+        .manifesto,
+        .growth-section,
+        .device-section,
+        .hardware-section,
+        .privacy-section {
+          padding: 88px 0;
+        }
+
+        .manifesto-inner {
+          gap: 28px;
+        }
+
+        .manifesto-bottom {
+          margin-top: 0;
+          font-size: 16px;
+        }
+
+        .section-head {
+          display: block;
+          margin-bottom: 32px;
+        }
+
+        .section-head p {
+          margin-top: 20px;
+        }
+
+        .growth-nav {
+          grid-template-columns: repeat(5, minmax(58px, 1fr));
+          overflow-x: auto;
+        }
+
+        .growth-step {
+          min-width: 58px;
+        }
+
+        .growth-stage {
+          min-height: 390px;
+          padding: 18px;
+          border-radius: 18px;
+        }
+
+        .growth-stage-copy {
+          right: 18px;
+          bottom: 18px;
+          left: 18px;
+          display: block;
+        }
+
+        .growth-stage-copy h3 {
+          font-size: 38px;
+        }
+
+        .growth-stage-copy p {
+          margin-top: 12px;
+        }
+
+        .device-screens {
+          display: flex;
+          gap: 18px;
+          margin-top: 48px;
+          margin-right: -16px;
+          margin-left: -16px;
+          padding: 10px 16px 24px;
+          overflow-x: auto;
+          scroll-snap-type: x proximity;
+        }
+
+        .device-screen-card,
+        .device-screen-card:nth-child(2),
+        .device-screen-card:nth-child(3),
+        .device-screen-card:nth-child(4) {
+          flex: 0 0 188px;
+          margin-top: 0;
+          scroll-snap-align: start;
+        }
+
+        .principles {
+          display: block;
+        }
+
+        .principle:nth-child(2) {
+          border-top: 1px solid rgba(246, 241, 222, 0.18);
+        }
+
+        .closing {
+          padding: 105px 0 115px;
+        }
+
+        .footer-inner {
+          display: block;
+        }
+
+        .footer-inner span + span {
+          display: block;
+          margin-top: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="container topbar-inner">
+          <a class="brand" href="#top" aria-label="WorrySeed 首页">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>WorrySeed</span>
+          </a>
+          <nav class="nav-links" aria-label="主导航">
+            <a href="#growth">它如何生长</a>
+            <a href="#hardware">把它交给时间</a>
+            <a class="nav-cta" href="#begin">种下一粒</a>
+          </nav>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="container hero-inner">
+            <div class="hero-copy">
+              <h1>埋下烦恼，<span>开花结果</span></h1>
+              <p class="hero-lead">
+                WorrySeed 是一款独立的 App，也是一小块留给自己的土地。现在，它先借住在 AI Passport 这台小小的机器里，把那些尚未想明白的事轻轻埋下，让时间替它生根。
+              </p>
+              <div class="hero-actions">
+                <a class="button button-primary" href="#growth">去看它生长</a>
+                <a class="button button-ghost" href="#hardware">把它交给时间</a>
+              </div>
+              <div class="hero-note">给那些尚未有答案的事</div>
+            </div>
+
+            <figure class="atlas-frame cover-frame" aria-label="烦恼种子像素风封面">
+              <img
+                class="cover-screen"
+                src="assets/publisher/cover.png"
+                alt="像素风烦恼种子封面：山谷湖泊前，一颗种子在土壤中发芽"
+              />
+              <figcaption class="atlas-caption">
+                <span>一粒种子，五个季节</span>
+                <span>给时间一点时间</span>
+              </figcaption>
+            </figure>
+          </div>
+          <a class="scroll-cue" href="#manifesto">向下，去看它生长</a>
+        </section>
+
+        <section class="manifesto" id="manifesto">
+          <div class="container manifesto-inner">
+            <p class="eyebrow">写给尚未完成的事</p>
+            <h2>有些答案，<em>要经过季节才会抵达。</em></h2>
+            <p class="manifesto-bottom">
+              我们总想尽快把烦恼说清、想通、解决。可有些事并不听从催促。它们先沉入心里，像种子沉入土壤，在看不见的地方慢慢长出根。<strong>你不必在今天成为一个已经想明白的人。</strong>
+            </p>
+          </div>
+        </section>
+
+        <section class="growth-section" id="growth">
+          <div class="container">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">一粒种子的时间</p>
+                <h2>不是每一种生长，都发生在地面上。</h2>
+              </div>
+              <p>点一点，听它说说每一个季节。</p>
+            </div>
+
+            <div class="growth-layout">
+              <div class="growth-nav" role="tablist" aria-label="烦恼种子成长阶段">
+                <button class="growth-step is-active" type="button" role="tab" aria-selected="true" data-stage="seed">
+                  <span class="growth-index" aria-hidden="true"></span>
+                  <span><strong>种下</strong><span>把今天的心事交给土壤。</span></span>
+                </button>
+                <button class="growth-step" type="button" role="tab" aria-selected="false" data-stage="root">
+                  <span class="growth-index" aria-hidden="true"></span>
+                  <span><strong>生根</strong><span>看不见的地方，也在发生。</span></span>
+                </button>
+                <button class="growth-step" type="button" role="tab" aria-selected="false" data-stage="sprout">
+                  <span class="growth-index" aria-hidden="true"></span>
+                  <span><strong>发芽</strong><span>一丝新的理解，露出地面。</span></span>
+                </button>
+                <button class="growth-step" type="button" role="tab" aria-selected="false" data-stage="tree">
+                  <span class="growth-index" aria-hidden="true"></span>
+                  <span><strong>成树</strong><span>走过的路，成为向上的枝干。</span></span>
+                </button>
+                <button class="growth-step" type="button" role="tab" aria-selected="false" data-stage="fruit">
+                  <span class="growth-index" aria-hidden="true"></span>
+                  <span><strong>结果</strong><span>把一枚果实，带回生活。</span></span>
+                </button>
+              </div>
+
+              <div class="growth-stage" id="growthStage" role="tabpanel" aria-live="polite">
+                <div class="growth-stage-copy">
+                  <h3 id="stageTitle">先把它轻轻放下。</h3>
+                  <p id="stageDescription">不必解释，也不必马上想明白。让这颗种子先拥有自己的夜晚。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="device-section" id="hardware">
+          <div class="container">
+            <div class="device-intro">
+              <div>
+                <p class="eyebrow">它目前借住的身体</p>
+                <h2>一台小小的设备，<br /><em>替你守住一段时间。</em></h2>
+              </div>
+              <p>
+                WorrySeed 是独立的 App。AI Passport 是它目前的第一具硬件身体。下面不是一张概念图，而是它已经开始发生的四个时刻。
+              </p>
+            </div>
+
+            <div class="device-screens">
+              <figure class="device-screen-card">
+                <img src="assets/publisher/app-01-empty-garden.png" alt="WorrySeed 空花园界面" />
+                <figcaption>
+                  <strong>先有一块土地</strong>
+                  <span>这里还没有烦恼。</span>
+                </figcaption>
+              </figure>
+              <figure class="device-screen-card">
+                <img src="assets/publisher/app-02-category.png" alt="WorrySeed 选择烦恼类别界面" />
+                <figcaption>
+                  <strong>为它找到土壤</strong>
+                  <span>工作、关系、家庭，或只是其他。</span>
+                </figcaption>
+              </figure>
+              <figure class="device-screen-card">
+                <img src="assets/publisher/app-03-recording.png" alt="WorrySeed 倾诉录音界面" />
+                <figcaption>
+                  <strong>把心里的话交给它</strong>
+                  <span>不必完整，只要是真实的。</span>
+                </figcaption>
+              </figure>
+              <figure class="device-screen-card">
+                <img src="assets/publisher/app-04-seed-planted.png" alt="WorrySeed 播种完成界面" />
+                <figcaption>
+                  <strong>然后，埋下它</strong>
+                  <span>剩下的交给时间。</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="hardware-section" id="ritual">
+          <div class="container hardware-grid">
+            <div class="hardware-copy">
+              <p class="eyebrow">一件可以握在手里的小仪式</p>
+              <p class="hardware-context">WorrySeed 是独立的 App。AI Passport，是它目前借住的身体。</p>
+              <h2>让声音，有一个可以安放的地方。</h2>
+              <p>
+                它不急着把情绪变成结论，只替你守住一段时间。你可以在最想说话的时候按下它，也可以在很久以后，再听见当时的自己。
+              </p>
+            </div>
+
+            <div class="hardware-list">
+              <article class="hardware-item">
+                <span class="hardware-item-index" aria-hidden="true">✦</span>
+                <div>
+                  <h3>说给它听</h3>
+                  <p>按下确认，把不必完整的一段话留给它。最长六十秒，足够把此刻放进去。</p>
+                </div>
+              </article>
+              <article class="hardware-item">
+                <span class="hardware-item-index" aria-hidden="true">✦</span>
+                <div>
+                  <h3>把它埋下</h3>
+                  <p>三颗按键，像一场很轻的仪式：种下、等待、回望。</p>
+                </div>
+              </article>
+              <article class="hardware-item">
+                <span class="hardware-item-index" aria-hidden="true">✦</span>
+                <div>
+                  <h3>在以后听见</h3>
+                  <p>某一天重新听见自己的声音，也许烦恼还在，也许你已经站到了它的另一边。</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="privacy-section">
+          <div class="container privacy-grid">
+            <div class="privacy-copy">
+              <p class="eyebrow">关于等待</p>
+              <h2>它不替你回答。<br />它只陪你等一等。</h2>
+              <p>有时候，答案不是被找到的，而是在你继续生活之后，慢慢长出来的。</p>
+            </div>
+
+            <div class="principles">
+              <article class="principle">
+                <h3>只在你手里</h3>
+                <p>有些话只需要被你听见。它不要求账号，也不把秘密交给远方。</p>
+              </article>
+              <article class="principle">
+                <h3>未完成也算生长</h3>
+                <p>暂时没有答案，不意味着什么也没有发生。</p>
+              </article>
+              <article class="principle">
+                <h3>回望不是重来</h3>
+                <p>每一次重新听见，都会让过去多一层光。</p>
+              </article>
+              <article class="principle">
+                <h3>把果实带回生活</h3>
+                <p>最后留下的，不是一个分数，而是一点可以继续走下去的力气。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="closing" id="begin">
+          <div class="container">
+            <h2>给一颗烦恼，<br />一场季节。</h2>
+            <p>埋下烦恼，开花结果。给它一点时间，也给自己一点空间。</p>
+            <button class="button button-primary" id="beginButton" type="button">把它种下</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container footer-inner">
+          <span>WorrySeed — 烦恼种子</span>
+          <span>for what is still becoming</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const stageContent = {
+        seed: {
+          title: "先把它轻轻放下。",
+          description: "不必解释，也不必马上想明白。让这颗种子先拥有自己的夜晚。"
+        },
+        root: {
+          title: "地下并不等于停滞。",
+          description: "沉默的日子也在发生。时间、回听和一次次尝试，会让根系继续向下。"
+        },
+        sprout: {
+          title: "答案先以一丝光出现。",
+          description: "也许只是想清楚了一点，也许只是今天终于做了一个小动作。"
+        },
+        tree: {
+          title: "你走过的路，会留下年轮。",
+          description: "每一次记录都不是修改过去，而是在同一颗种子上增加一圈年轮。"
+        },
+        fruit: {
+          title: "它没有消失，只换了形状。",
+          description: "果实不是分数，而是一点以后遇到类似问题时，仍然可以带走的光。"
+        }
+      };
+
+      const stageButtons = [...document.querySelectorAll(".growth-step")];
+      const stageTitle = document.querySelector("#stageTitle");
+      const stageDescription = document.querySelector("#stageDescription");
+      const stagePanel = document.querySelector("#growthStage");
+
+      function activateStage(button) {
+        const stage = button.dataset.stage;
+        const content = stageContent[stage];
+        stageButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-selected", String(active));
+        });
+        stageTitle.textContent = content.title;
+        stageDescription.textContent = content.description;
+        stagePanel.dataset.stage = stage;
+      }
+
+      stageButtons.forEach((button) => {
+        button.addEventListener("click", () => activateStage(button));
+      });
+
+      document.querySelector("#beginButton").addEventListener("click", () => {
+        const rootButton = document.querySelector('[data-stage="root"]');
+        activateStage(rootButton);
+        document.querySelector("#growth").scrollIntoView({ behavior: "smooth" });
+      });
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("reduced-motion");
+      }
+    </script>
+  </body>
+</html>
